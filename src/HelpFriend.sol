@@ -71,7 +71,7 @@ contract HelpFriend {
     //Donnate to the contract based on the ETH/USD price
     function donate() public payable {
         if (msg.value.getConversionRate(s_priceFeed) < MINIMUM_USD) {
-        	revert HelpFriend__Not_Enough_ETH(msg.value);
+            revert HelpFriend__Not_Enough_ETH(msg.value);
         }
         s_donors.push(msg.sender); //List the donnator on the array
         s_addressToAmountDonated[msg.sender] += msg.value; //Track the amount each sender donnated
@@ -120,9 +120,9 @@ contract HelpFriend {
         return i_friendAddress;
     }
 
-	function getAggregatorV3Interface() public view returns (AggregatorV3Interface) {
-		return s_priceFeed;
-	}
+    function getAggregatorV3Interface() public view returns (AggregatorV3Interface) {
+        return s_priceFeed;
+    }
 
     function getPriceFeed() public view returns (address) {
         return i_priceFeed;
@@ -153,7 +153,6 @@ contract HelpFriend {
     /*//////////////////////////////////////////////////////////////
                           GET ERRORS SELECTORS
     //////////////////////////////////////////////////////////////*/
-
 
     function getHelpFriendNotOwnerErrorSelector() external pure returns (bytes4) {
         return HelpFriend__NotOwner.selector;

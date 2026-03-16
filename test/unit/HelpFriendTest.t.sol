@@ -56,10 +56,10 @@ contract HelpFriendTest is Test, HelperConfig {
         }
     }
 
-	function testAggregatorV3InterfaceIsCorrect() public view {
-		AggregatorV3Interface aggregatorV3Interface = helpFriend.getAggregatorV3Interface();
-		assert(aggregatorV3Interface == AggregatorV3Interface(FIRST_LOCAL_ANVIL_PRICE_FEED_MOCK));
-	}
+    function testAggregatorV3InterfaceIsCorrect() public view {
+        AggregatorV3Interface aggregatorV3Interface = helpFriend.getAggregatorV3Interface();
+        assert(aggregatorV3Interface == AggregatorV3Interface(FIRST_LOCAL_ANVIL_PRICE_FEED_MOCK));
+    }
 
     function testMinimumDollarIsFive() public view {
         assertEq(helpFriend.MINIMUM_USD(), 5e18);
@@ -73,10 +73,10 @@ contract HelpFriendTest is Test, HelperConfig {
         assertEq(helpFriend.getOwner(), msg.sender);
     }
 
-	function testOwnerIsSetCorrectlyOnConstructor() public {
-		address owner = helpFriend.getOwner();
-		assertEq(owner, msg.sender);
-	}
+    function testOwnerIsSetCorrectlyOnConstructor() public {
+        address owner = helpFriend.getOwner();
+        assertEq(owner, msg.sender);
+    }
 
     /*//////////////////////////////////////////////////////////////
                                MODIFIERS
@@ -104,22 +104,22 @@ contract HelpFriendTest is Test, HelperConfig {
         vm.stopPrank();
     }
 
-	function testAmountSentToFriendAddressEvent() public donated {
-		vm.startPrank(helpFriend.getOwner());
-		vm.recordLogs();
-		helpFriend.withdraw();
-		vm.stopPrank();
-		
-		Vm.Log[] memory entries = vm.getRecordedLogs();
-		bytes32 logFriendAddress = entries[0].topics[1];
-		bytes32 amountSent = entries[0].topics[2];
+    function testAmountSentToFriendAddressEvent() public donated {
+        vm.startPrank(helpFriend.getOwner());
+        vm.recordLogs();
+        helpFriend.withdraw();
+        vm.stopPrank();
 
-		address friendAddress = address(uint160(uint256(logFriendAddress)));
+        Vm.Log[] memory entries = vm.getRecordedLogs();
+        bytes32 logFriendAddress = entries[0].topics[1];
+        bytes32 amountSent = entries[0].topics[2];
 
-		assertEq(friendAddress, helpFriend.getFriendAddress());
-		assertEq(uint256(amountSent), SEND_VALUE);		
-	}
-    
+        address friendAddress = address(uint160(uint256(logFriendAddress)));
+
+        assertEq(friendAddress, helpFriend.getFriendAddress());
+        assertEq(uint256(amountSent), SEND_VALUE);
+    }
+
     /*//////////////////////////////////////////////////////////////
                            TEST REVERT ERRORS
     //////////////////////////////////////////////////////////////*/
@@ -127,19 +127,15 @@ contract HelpFriendTest is Test, HelperConfig {
     function testSendFailsWithoutEnoughETH() public {
         uint256 insufficientEthToDonate = 0.001e18;
         bytes4 selector = helpFriend.getHelpFriendNotEnoughEthErrorSelector();
-        vm.expectRevert(
-        	abi.encodeWithSelector(selector, insufficientEthToDonate)
-        );
+        vm.expectRevert(abi.encodeWithSelector(selector, insufficientEthToDonate));
         helpFriend.donate{value: insufficientEthToDonate}();
-    }	
+    }
 
- 	function testOnlyOwnerCanWithdraw() public donated {
- 		bytes4 selector = helpFriend.getHelpFriendNotOwnerErrorSelector();
-    
+    function testOnlyOwnerCanWithdraw() public donated {
+        bytes4 selector = helpFriend.getHelpFriendNotOwnerErrorSelector();
+
         vm.startPrank(USER);
-        vm.expectRevert(
-        	abi.encodeWithSelector(selector, USER)
-        );
+        vm.expectRevert(abi.encodeWithSelector(selector, USER));
         helpFriend.withdraw();
         vm.stopPrank();
     }
@@ -153,9 +149,7 @@ contract HelpFriendTest is Test, HelperConfig {
         vm.stopPrank();
 
         vm.startPrank(helpFriend.getOwner());
-        vm.expectRevert(
-        	abi.encodeWithSelector(selector, insufficientEthToWithdraw)
-        );
+        vm.expectRevert(abi.encodeWithSelector(selector, insufficientEthToWithdraw));
         helpFriend.withdraw();
         vm.stopPrank();
     }
