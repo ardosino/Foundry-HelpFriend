@@ -36,7 +36,7 @@ The value is priced using a Chainlink price feed, and the smart contract keepes 
 ```
 git clone https://github.com/ardosino/foundry-HelpFriend
 cd foundry-HelpFriend
-make
+forge build
 ```
 
 # Usage
@@ -77,7 +77,7 @@ forge coverage
 
 1. Setup environment variables
 
-You’l want to set yor `SEPOLIA_RPC_URL` as an environment variable. You can add it to a `.env` file.
+You’ll want to set yor `SEPOLIA_RPC_URL` as an environment variable. You can add it to a `.env` file.
 
 - `SEPOLIA_RPC_URL` : This is URLof the sepolia testnet node you are working with. You can get setup with one for free from [Alchemy](https://www.alchemy.com/)
 
